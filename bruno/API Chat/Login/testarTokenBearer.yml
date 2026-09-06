@@ -1,0 +1,16 @@
+info:
+  name: testarTokenBearer
+  type: http
+
+http:
+  method: GET
+  url: http://localhost/api/me
+  auth:
+    type: bearer
+    token: 1|gMu883dSi0Hndhdn5MwQkP2fldOnZLSA02H1Q4fS8e30ddeb
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

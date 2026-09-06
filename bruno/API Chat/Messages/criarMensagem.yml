@@ -1,0 +1,22 @@
+info:
+  name: criarMensagem
+  type: http
+
+http:
+  method: POST
+  url: http://localhost/api/conversations/1/messages
+  body:
+    type: json
+    data: |-
+      {
+          "message": "Mensagem enviada pela API!"
+      }
+  auth:
+    type: bearer
+    token: 2|DyWNxJKSujkZSvjrOiFTp1k22d0KU7hwmBa6UZUmefc9e3d5
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
