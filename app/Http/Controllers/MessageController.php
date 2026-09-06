@@ -10,11 +10,12 @@ use App\Service\MessageService;
 
 class MessageController extends Controller
 {
-
     public function __construct(private MessageService $messageService) {}
 
     public function index(Conversation $conversation)
     {
+        $this->authorize('view', $conversation);
+
         return response()->json($conversation->messages);
     }
 

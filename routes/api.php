@@ -9,21 +9,18 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
+    // Auth
     Route::get('/me', [AuthController::class, 'me']);
 
+    // Conversations
     Route::get('/conversations', [ConversationController::class, 'index']);
     Route::post('/conversations', [ConversationController::class, 'store']);
+    Route::patch('/conversations/{conversation}', [ConversationController::class, 'update']);
     Route::get('/conversations/{conversation}', [ConversationController::class, 'show']);
+    Route::delete('/conversations/{conversation}', [ConversationController::class, 'destroy']);
 
-    Route::get(
-        '/conversations/{conversation}/messages',
-        [MessageController::class, 'index']
-    );
-
-    Route::post(
-        '/conversations/{conversation}/messages',
-        [MessageController::class, 'store']
-    );
-
+    // Messages
+    Route::get('/conversations/{conversation}/messages', [MessageController::class, 'index']);
+    Route::post('/conversations/{conversation}/messages', [MessageController::class, 'store']);
     Route::patch('/messages/{message}', [MessageController::class, 'update']);
 });

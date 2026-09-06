@@ -2,31 +2,65 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreConversationRequest;
+use App\Http\Requests\UpdateConversationRequest;
+use App\Http\Resources\ConversationResource;
 use App\Models\Conversation;
-use Illuminate\Http\Request;
+use App\Service\ConversationService;
 
 class ConversationController extends Controller
 {
+    public function __construct(private ConversationService $conversationService)
+    {
+    }
+
     public function index()
     {
-        return Conversation::all();
+        $user = auth()->user();
+
+        return ConversationResource::collection($user->conversations()->paginate());
     }
-    
-    public function store(Request $request)
+
+    public function store(StoreConversationRequest $request)
     {
-        $data = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'image_path' => ['nullable', 'string'],
-        ]);
+        $user = auth()->user();
 
-        $conversation = Conversation::create($data);
+        $conversation = $this->conversationService->createConversation(
+            $user,
+            $request->validated('name'),
+            $request->validated('description')
+        );
 
-        return response()->json($conversation, 201);
+        return (new ConversationResource($conversation))
+            ->response()
+            ->setStatusCode(201);
     }
 
     public function show(Conversation $conversation)
     {
-        return response()->json($conversation);
+        $this->authorize('view', $conversation);
+
+        return new ConversationResource($conversation);
+    }
+
+    public function update(UpdateConversationRequest $request, Conversation $conversation)
+    {
+        $this->authorize('update', $conversation);
+
+        $conversation = $this->conversationService->updateConversation(
+            $conversation,
+            $request->validated()
+        );
+
+        return new ConversationResource($conversation);
+    }
+
+    public function destroy(Conversation $conversation)
+    {
+        $this->authorize('delete', $conversation);
+
+        $this->conversationService->deleteConversation($conversation);
+
+        return response()->noContent();
     }
 }

@@ -15,4 +15,16 @@ class ConversationService
             'created_by' => $user->id,
         ]);
     }
+
+    public function updateConversation(Conversation $conversation, array $data): Conversation
+    {
+        $conversation->update($data);
+
+        return $conversation->fresh();
+    }
+
+    public function deleteConversation (Conversation $conversation): void
+    {
+        $conversation->delete();
+    }
 }

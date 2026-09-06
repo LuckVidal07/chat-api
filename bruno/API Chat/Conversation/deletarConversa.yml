@@ -1,0 +1,18 @@
+info:
+  name: deletarConversa
+  type: http
+  seq: 4
+
+http:
+  method: DELETE
+  url: http://localhost/api/conversations/1
+  auth:
+    type: bearer
+    token: 5|0w5kYYBt6tcMRmDSfuntraqXYPidQiXO4nBrsxD11cec60e8
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
